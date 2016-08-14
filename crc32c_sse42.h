@@ -12,7 +12,7 @@ static inline uint32_t crc32c_sse42(uint32_t seed, const void *data, size_t len)
 {
 	uint32_t crc = seed;
 	for (size_t i=0; i<len/8; i++) {
-		const uint64_t *u64 = data;
+		const uint64_t *u64 = (const uint64_t *)data;
 		crc = __builtin_ia32_crc32di(crc, u64[i]);
 	}
 	const uint8_t *u8 = &((uint8_t *)data)[len-7];
