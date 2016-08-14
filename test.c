@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "mhash.h"
+#include "PMurHash.h"
 
 #define TESTS	10000
 
@@ -26,5 +27,6 @@ int main(void)
 {
 	TEST_FN(platform_hash);
 	TEST_FN(mhash);
+	TEST_FN(PMurHash32);
 	return 0;
 }

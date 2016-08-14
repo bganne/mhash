@@ -1,6 +1,6 @@
 CFLAGS:=-g -Wall -Werror -std=gnu99
 CFLAGS+= -O2
-#CFLAGS+= -msse4
+CFLAGS+= -msse4
 LDFLAGS:=-g
 
 all: test
