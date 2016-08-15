@@ -5,7 +5,7 @@ LDFLAGS:=-g
 
 all: test
 
-test: test.c PMurHash.c
+test: test.c mhash.c PMurHash.c
 
 clean:
 	$(RM) test

@@ -1,14 +1,9 @@
-#ifndef CRC32C_SSE42_H_
-#define CRC32C_SSE42_H_
-
-#ifdef __cplusplus
-extern "C" {
-#endif	/* __cplusplus */
-
 #include <stddef.h>
 #include <stdint.h>
+#include "mhash.h"
 
-static inline uint32_t crc32c_sse42(uint32_t seed, const void *data, size_t len)
+#ifdef __SSE4_2__
+uint32_t mhash_crc32c_sse42(uint32_t seed, const void *data, size_t len)
 {
 	uint32_t crc = seed;
 	for (size_t i=0; i<len/8; i++) {
@@ -27,9 +22,9 @@ static inline uint32_t crc32c_sse42(uint32_t seed, const void *data, size_t len)
 	}
 	return crc;
 }
+#endif	/* __SSE4_2__ */
 
-#ifdef __cplusplus
+uint32_t mhash_extern__(uint32_t seed, const void *data, size_t len)
+{
+	return mhash_inline__(seed, data, len);
 }
-#endif	/* __cplusplus */
-
-#endif	/* CRC32C_SSE42_H_ */
