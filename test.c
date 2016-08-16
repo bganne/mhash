@@ -6,7 +6,7 @@
 #include "mhash.h"
 #include "PMurHash.h"
 
-#define TESTS	16384
+#define TESTS	(4*16384)
 
 static uint64_t tests[TESTS];
 static char scratch[128];
@@ -40,8 +40,8 @@ static inline void test_clustering(hash_fn hfn, const char *name)
 	memset(tests, 0, sizeof(tests));
 	for (int i=0; i<TESTS; i++) {
 		__uint128_t v = i;
-		v <<= 2*8-14;
-		uint32_t h = hfn(0, &v, 6);
+		v <<= 9*8-1-16;
+		uint32_t h = hfn(0, &v, 9);
 		tests[h%TESTS]++;
 	}
 	printf("%s: linear input clustering = %g\n", name,

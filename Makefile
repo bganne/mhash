@@ -5,9 +5,9 @@ LDFLAGS:=-g
 
 all: test
 
-test: test.c mhash.c PMurHash.c
+test: test.o mhash.o PMurHash.o
 
 clean:
-	$(RM) test
+	$(RM) test *.o
 
 .PHONY: all clean

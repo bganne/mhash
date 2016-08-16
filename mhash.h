@@ -73,32 +73,17 @@ static inline uint32_t mhash_inline__(uint32_t seed, const void *data, size_t le
 #endif	/* __SIZEOF_INT128__ */
 		};
 	} __attribute__((packed)) *data_ = (const struct mhash *)data;
-	/*
-	 * Multiplicative hashing tends to spread entropy to higher bits.
-	 * Depending the size of the data, we want to use a big enough
-	 * data type (and constant, and division) so the result is "good".
-	 * 32-bits ops are cheaper than 64-bits ops which are cheaper than
-	 * 128-bits ops (when supported), depending of the size of the data,
-	 * we specialize to get the best performance vs quality ratio
-	 */
-	if (len <= 3) {
-		uint32_t val = 0;
+	if (len <= 6) {
+		uint64_t val = 0;
 		switch (len) {
 			MHASH_GET(1);
 			MHASH_GET(2);
 			MHASH_GET(3);
-		}
-		/* the magic used is 2^32 * Phi */
-		return seed ^ ((val * 0x9E3779B9) >> 4);
-	} else if (len <= 6) {
-		uint64_t val;
-		switch (len) {
 			MHASH_GET(4);
 			MHASH_GET(5);
 			MHASH_GET(6);
 		}
-		/* the magic used is 2^64 * Phi */
-		return seed ^ ((val * 0x9E3779B97F4A7C16) >> 32);
+		return seed ^ ((val * 0x9E3779B97F) >> 32);
 	}
 #ifdef __SIZEOF_INT128__
 	else if (len <= 13) {
@@ -112,8 +97,7 @@ static inline uint32_t mhash_inline__(uint32_t seed, const void *data, size_t le
 			MHASH_GET(12);
 			MHASH_GET(13);
 		}
-		/* the magic used is 2^128 * Phi */
-		return seed ^ ((val * MHASH_MK128(0x9E3779B97F4A7C15, 0xF39CC0605CEDC834)) >> 96);
+		return seed ^ ((val * MHASH_MK128(0x9E3779B97F, 0x4A7C15F39CC0605D)) >> 96);
 	}
 #endif	/* __SIZEOF_INT128__ */
 	return mhash_platform(seed, data, len);
